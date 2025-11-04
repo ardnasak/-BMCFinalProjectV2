@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "580542267533",
+    "project_id": "my-ecommerce-app-calma",
+    "storage_bucket": "my-ecommerce-app-calma.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:580542267533:android:9dc1571b42c83d231762c4",
+        "android_client_info": {
+          "package_name": "com.example.ecommerce_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDDIXNUjVSUreu09usr5xmeo07kc6VTBE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
