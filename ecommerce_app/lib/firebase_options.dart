@@ -22,6 +22,7 @@ class DefaultFirebaseOptions {
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
+
       case TargetPlatform.iOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for ios - '
@@ -65,4 +66,5 @@ class DefaultFirebaseOptions {
     projectId: 'my-ecommerce-app-calma',
     storageBucket: 'my-ecommerce-app-calma.firebasestorage.app',
   );
+
 }

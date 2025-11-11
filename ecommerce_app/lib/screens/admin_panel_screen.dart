@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:my_app/screens/admin_order_screen.dart'; // 1. ADD THIS
 
 class AdminPanelScreen extends StatefulWidget {
   const AdminPanelScreen({super.key});
@@ -9,17 +10,12 @@ class AdminPanelScreen extends StatefulWidget {
 }
 
 class _AdminPanelScreenState extends State<AdminPanelScreen> {
-  // 1. A key to validate our Form
   final _formKey = GlobalKey<FormState>();
-
-  // 2. Controllers for each text field
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _priceController = TextEditingController();
   final _imageUrlController = TextEditingController();
-
   bool _isLoading = false;
-
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
@@ -52,7 +48,7 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Product uploaded successfully!')),
+        const SnackBar(content: Text("Product uploaded successfully!")),
       );
 
       _formKey.currentState!.reset();
@@ -63,7 +59,7 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
 
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to upload product: $e')),
+        SnackBar(content: Text("Failed to upload product: $e")),
       );
     } finally {
       if (mounted) {
@@ -88,19 +84,46 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                // 3. --- ADD THIS NEW BUTTON ---
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.list_alt),
+                  label: const Text('Manage All Orders'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.indigo, // A different color
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    textStyle: const TextStyle(fontSize: 16),
+                  ),
+                  onPressed: () {
+                    // 4. Navigate to our new screen
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const AdminOrderScreen(),
+                      ),
+                    );
+                  },
+                ),
+                // 5. A divider to separate it
+                const Divider(height: 30, thickness: 1),
 
+                const Text(
+                  'Add New Product',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 10),
+
+                // 6. The rest of your form (wrapped in its own Form widget
+
+                // Image URL field
                 TextFormField(
                   controller: _imageUrlController,
-                  decoration: const InputDecoration(
-                    labelText: 'Image URL',
-                    border: OutlineInputBorder(),
-                  ),
+                  decoration: const InputDecoration(labelText: 'Image URL'),
                   keyboardType: TextInputType.url,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter an image URL';
                     }
-                    if (!value.startsWith('http')) {
+                    if (!value.startsWith("http")) {
                       return 'Please enter a valid URL (e.g., http://...)';
                     }
                     return null;
@@ -108,35 +131,29 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                 ),
                 const SizedBox(height: 16),
 
+                // Product Name field
                 TextFormField(
                   controller: _nameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Product Name',
-                    border: OutlineInputBorder(),
-                  ),
+                  decoration: const InputDecoration(labelText: 'Product Name'),
                   validator: (value) =>
                   value!.isEmpty ? 'Please enter a name' : null,
                 ),
                 const SizedBox(height: 16),
 
+                // Description field
                 TextFormField(
                   controller: _descriptionController,
-                  decoration: const InputDecoration(
-                    labelText: 'Description',
-                    border: OutlineInputBorder(),
-                  ),
+                  decoration: const InputDecoration(labelText: 'Description'),
                   maxLines: 3,
                   validator: (value) =>
                   value!.isEmpty ? 'Please enter a description' : null,
                 ),
                 const SizedBox(height: 16),
 
+                // Price field
                 TextFormField(
                   controller: _priceController,
-                  decoration: const InputDecoration(
-                    labelText: 'Price',
-                    border: OutlineInputBorder(),
-                  ),
+                  decoration: const InputDecoration(labelText: 'Price'),
                   keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -150,19 +167,15 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                 ),
                 const SizedBox(height: 20),
 
+                // Upload Button
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                   ),
                   onPressed: _isLoading ? null : _uploadProduct,
                   child: _isLoading
-                      ? const CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                  )
-                      : const Text(
-                    'Upload Product',
-                    style: TextStyle(fontSize: 18),
-                  ),
+                      ? const CircularProgressIndicator()
+                      : const Text('Upload Product'),
                 ),
               ],
             ),
